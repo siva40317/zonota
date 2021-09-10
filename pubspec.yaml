@@ -1,0 +1,49 @@
+name: zonota
+description: Notes &  Tasks
+
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+   cupertino_icons:
+   flutter_localizations:
+      sdk: flutter
+   intl: ^0.17.0
+   json_annotation:
+   bloc:
+   http: 0.13.3
+   flutter_bloc:
+   equatable: ^2.0.3
+   dartz:
+   shared_preferences:
+   cached_network_image:
+   fluttertoast: ^8.0.8
+   firebase_auth: ^3.1.0
+   firebase_core: ^1.6.0
+   cloud_firestore: ^2.5.1
+   contacts_service: ^0.6.1
+   permission_handler: ^8.1.4+2
+   pin_code_text_field: ^1.8.0
+   flutter_local_notifications:
+   android_alarm_manager_plus: ^1.2.0
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+
+flutter:
+
+
+  uses-material-design: true
+  assets:
+    - assets/images/
+

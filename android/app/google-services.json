@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "852222118465",
+    "project_id": "zonotaapp",
+    "storage_bucket": "zonotaapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852222118465:android:186698438a8a2713e554c0",
+        "android_client_info": {
+          "package_name": "com.zonota"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852222118465-4q1lot5mb1is1d29dbgj66cfe1kt6fgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2GHdFq5D6fKcygvergiraf7qcbgRmbXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852222118465-4q1lot5mb1is1d29dbgj66cfe1kt6fgj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
