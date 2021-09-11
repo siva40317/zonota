@@ -25,9 +25,6 @@ class _HomeContainerState extends State<HomeContainer> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    RepositoryImpl().getMyTasks((fn) {
-
-    });
   }
 
   @override

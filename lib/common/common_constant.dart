@@ -1,41 +1,8 @@
-import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CommonConstant {
-  static const FONTS = {
-    "OPEN_SANS_BOLD": "OpenSans-Bold",
-    "OPEN_SANS_LIGHT": "SourceSansPro-Light",
-    "OPEN_SANS_SEMI_BOLD": "OpenSans-SemiBold",
-    "OPEN_SANS_REGULAR": "OpenSans-Regular"
-  };
 
-
-
-  static const ASSET_URL = {
-
-  };
-
- static const IMAGE_CAR="https://cdn.mattaki.com/honda/news/content-pieces/4e4c15da-e551-4aaa-9b25-e3d1d069d289/image.png";
-
-  static bool isTablet(MediaQueryData query) {
-    var size = query.size;
-    var diagonal =
-        sqrt((size.width * size.width) + (size.height * size.height));
-
-    /*
-    print(
-      'size: ${size.width}x${size.height}\n'
-      'pixelRatio: ${query.devicePixelRatio}\n'
-      'pixels: ${size.width * query.devicePixelRatio}x${size.height * query.devicePixelRatio}\n'
-      'diagonal: $diagonal'
-    );
-    */
-
-    var isTablet = diagonal > 1100.0;
-    return isTablet;
-  }
 
   static String timeAgoSinceDate(int time,
       {bool numericDates = true}) {

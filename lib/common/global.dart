@@ -1,8 +1,7 @@
 
 import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:zonota/models/TaskModel.dart';
-import 'package:zonota/models/user_model.dart';
+import 'package:zonota/models/task_model.dart';
 
 
 var wallet_balance = 0;

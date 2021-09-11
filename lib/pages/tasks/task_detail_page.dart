@@ -7,7 +7,7 @@ import 'package:zonota/common/colors.dart';
 import 'package:zonota/common/common_constant.dart';
 import 'package:zonota/common/global.dart';
 import 'package:zonota/config/size_config.dart';
-import 'package:zonota/models/TaskModel.dart';
+import 'package:zonota/models/task_model.dart';
 import 'package:zonota/models/notes_model.dart';
 import 'package:zonota/repositories/repository.dart';
 import 'package:flutter/services.dart';
@@ -30,14 +30,7 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:new AppBar(
-        iconTheme: IconThemeData(
-          color: AppColors.colorFromHex(AppColors.primary), //change your color here
-        ),
-        backgroundColor:Colors.white,
-        elevation:0,
-        title:Text("Task Detail",style:TextStyle(color:AppColors.colorFromHex(AppColors.primary),
-        fontWeight:FontWeight.w900),),),
+      appBar:getAppBar(),
       body:Container(
            height:SizeConfig.height(100),
            width:SizeConfig.width(100),
@@ -47,63 +40,16 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
     child:Column(
       crossAxisAlignment:CrossAxisAlignment.start,
       children: [
-
-        Text(widget?.taskModel?.title,style:TextStyle(color:AppColors.colorFromHex(AppColors.primary),
-        fontWeight:FontWeight.w900,fontSize:SizeConfig.h6),),
-        SizedBox(height:SizeConfig.size(2),),
-        Container(child:Text(widget.type==0?"Assigned To ":"Assigned By",style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
-            fontSize:SizeConfig.s1),)),
+        getTitleView(),
+       SizedBox(height:SizeConfig.size(2),),
+        getAssignedView(),
         SizedBox(height:SizeConfig.width(1),),
-        Row(children: [
-
-          Icon(Icons.account_circle_rounded),
-          SizedBox(width:SizeConfig.fitwidth(2),),
-          Expanded(child:Text(getAssigneeName(),style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
-              fontSize:SizeConfig.t1),)),
-
-          SizedBox(width:SizeConfig.fitwidth(5),),
-          Container(child:Text(CommonConstant.timeAgoSinceDate(widget?.taskModel?.modifiedTime)??"",style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
-              fontSize:SizeConfig.s1),))
-        ],),
+        getInfoView(),
         SizedBox(height:SizeConfig.size(1),),
         SizedBox(height:SizeConfig.width(2),),
-        Container(
-          width:SizeConfig.width(100),
-          height:SizeConfig.height(3),
-          decoration:BoxDecoration(
-              color:AppColors.colorFromHex(AppColors.grey100),
-              borderRadius:BorderRadius.circular(SizeConfig.width(20))
-          ),
-          child:ClipRRect(
-              borderRadius:BorderRadius.circular(SizeConfig.width(20)),
-              child:Stack(
-                alignment:Alignment.centerLeft,
-                children: [
-                  Container(
-                    width:SizeConfig.width(widget.taskModel.progress>14?
-                    (widget.taskModel.progress)-8.00:widget.taskModel.progress.toDouble()),
-                    decoration:BoxDecoration(
-                        color:getStatusColor(),
-                        borderRadius:BorderRadius.circular(SizeConfig.width(20))
-                    ),),
-                  Container(
-                      alignment:Alignment.center,
-                      width:SizeConfig.width(100),
-                      child:Text(getStatus(),style:TextStyle(color:getTextColor()),))
-                ],
-              )),
-
-        ),
+        getProgressView(),
         Divider(),
-        Row
-          (
-          mainAxisAlignment:MainAxisAlignment.center,
-          children: [
-          !progressMode && [0,1].contains(widget.taskModel.status)?getUpdateStatusButton():Container(),
-          SizedBox(width:SizeConfig.width(1),),
-           progressMode? getProgressTextField():Container(),
-            [1].contains(widget.taskModel.status)?getUpdateProgressButton():Container()
-        ],),
+         getActionsView(),
         Divider(),
         Container(child:Text("Description",style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
             fontSize:SizeConfig.s1),)),
@@ -122,6 +68,34 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
     );
   }
 
+  getTitleView()
+  {
+    return Container(child:   Text(widget?.taskModel?.title,style:TextStyle(color:AppColors.colorFromHex(AppColors.primary),
+        fontWeight:FontWeight.w900,fontSize:SizeConfig.h6),),
+
+    );
+  }
+
+  getAssignedView()
+  {
+    return  Container(child:Text(widget.type==0?"Assigned To ":"Assigned By",style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
+        fontSize:SizeConfig.s1),));
+
+  }
+
+  getAppBar()
+  {
+    return new AppBar(
+      iconTheme: IconThemeData(
+        color: AppColors.colorFromHex(AppColors.primary), //change your color here
+      ),
+      backgroundColor:Colors.white,
+      elevation:0,
+      title:Text("Task Detail",style:TextStyle(color:AppColors.colorFromHex(AppColors.primary),
+          fontWeight:FontWeight.w900),),);
+
+  }
+
   getAssigneeName() {
     if(widget.type==0)
        return FirebaseAuth.instance.currentUser.uid == widget.taskModel.assigneeId?
@@ -129,6 +103,66 @@ class _TaskDetailPageState extends State<TaskDetailPage> {
     else
       return FirebaseAuth.instance.currentUser.uid == widget.taskModel.creatorId?
       "ME":getNameByContactNumber(widget.taskModel.creatorPhone);
+  }
+
+  getInfoView()
+  {
+    return Row(children: [
+
+      Icon(Icons.account_circle_rounded),
+      SizedBox(width:SizeConfig.fitwidth(2),),
+      Expanded(child:Text(getAssigneeName(),style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
+          fontSize:SizeConfig.t1),)),
+
+      SizedBox(width:SizeConfig.fitwidth(5),),
+      Container(child:Text(CommonConstant.timeAgoSinceDate(widget?.taskModel?.modifiedTime)??"",style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
+          fontSize:SizeConfig.s1),))
+    ],);
+  }
+
+  getProgressView()
+  {
+    return Container(
+      width:SizeConfig.width(100),
+      height:SizeConfig.height(3),
+      decoration:BoxDecoration(
+          color:AppColors.colorFromHex(AppColors.grey100),
+          borderRadius:BorderRadius.circular(SizeConfig.width(20))
+      ),
+      child:ClipRRect(
+          borderRadius:BorderRadius.circular(SizeConfig.width(20)),
+          child:Stack(
+            alignment:Alignment.centerLeft,
+            children: [
+              Container(
+                width:SizeConfig.width(widget.taskModel.progress>14?
+                (widget.taskModel.progress)-8.00:widget.taskModel.progress.toDouble()),
+                decoration:BoxDecoration(
+                    color:getStatusColor(),
+                    borderRadius:BorderRadius.circular(SizeConfig.width(20))
+                ),),
+              Container(
+                  alignment:Alignment.center,
+                  width:SizeConfig.width(100),
+                  child:Text(getStatus(),style:TextStyle(color:getTextColor()),))
+            ],
+          )),
+
+    );
+  }
+
+  getActionsView()
+  {
+
+    return  Row
+      (
+      mainAxisAlignment:MainAxisAlignment.center,
+      children: [
+        !progressMode && [0,1].contains(widget.taskModel.status)?getUpdateStatusButton():Container(),
+        SizedBox(width:SizeConfig.width(1),),
+        progressMode? getProgressTextField():Container(),
+        [1].contains(widget.taskModel.status)?getUpdateProgressButton():Container()
+      ],);
   }
 
 

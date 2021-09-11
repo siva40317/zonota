@@ -18,9 +18,9 @@ import 'package:zonota/common/colors.dart';
 import 'package:zonota/common/global.dart';
 import 'package:zonota/common/storage.dart';
 import 'package:zonota/config/size_config.dart';
-import 'package:zonota/models/TaskModel.dart';
+import 'package:zonota/models/task_model.dart';
 import 'package:zonota/models/notes_model.dart';
-import 'package:zonota/notifications/ReminderNotification.dart';
+import 'package:zonota/notifications/received_notification.dart';
 import 'package:zonota/pages/create_task_page.dart';
 import 'package:zonota/pages/tasks/my_tasks_list_item.dart';
 

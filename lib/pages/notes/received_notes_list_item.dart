@@ -24,8 +24,8 @@ class _ReceivedNotesListItemState extends State<ReceivedNotesListItem> {
 
         onTap:()
     {
-      Navigator.push(context, new MaterialPageRoute(builder:(context)=> NotesDetailPage(notesModel:widget.data,)));
-    },
+      navigate();
+     },
     child:Container(
       padding: EdgeInsets.all(SizeConfig.width(5)),
       margin: EdgeInsets.all(SizeConfig.size(1)),
@@ -39,34 +39,15 @@ class _ReceivedNotesListItemState extends State<ReceivedNotesListItem> {
           SizedBox(height:SizeConfig.height(1),),
           Container(child:Row(
             children: [
-             Expanded(child: Text(widget?.data?.title??"",style:TextStyle(color:Colors.grey,fontWeight:FontWeight.w900,
-                  fontSize:SizeConfig.h6),)),
-              InkWell(
-                  onTap:() async
-                  {
-                   var contacts = await  Navigator.push(context, new MaterialPageRoute(builder:(context)=> ChooseContactsPage()));
-                   if(contacts!=null && contacts.isNotEmpty)
-                     {
-                       await RepositoryImpl().shareNotes(contacts, widget.data);
-                     }
-                  },
-                  child:Icon(Icons.share))
+              getTitleView(),
+              getShareButton()
             ],
           )),
           SizedBox(height:SizeConfig.height(2),),
-          Container(child:Text(widget?.data?.content??"",style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
-              fontSize:SizeConfig.t1),)),
+          getContentView(),
           Divider(),
-          Row(children: [
-            Icon(Icons.account_circle_rounded),
-            SizedBox(width:SizeConfig.fitwidth(2),),
-            Expanded(child:Text(getNameByContactNumber(widget?.data?.creatorPhone)??"",style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
-                fontSize:SizeConfig.t1),)),
+          getInfoView()
 
-            SizedBox(width:SizeConfig.fitwidth(5),),
-            Container(child:Text(CommonConstant.timeAgoSinceDate(widget?.data?.modifiedTime)??"",style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
-                fontSize:SizeConfig.s1),))
-          ],)
 
 
 
@@ -74,4 +55,50 @@ class _ReceivedNotesListItemState extends State<ReceivedNotesListItem> {
       ),
     ));
   }
+
+  getTitleView()
+  {
+    return Expanded(child: Text(widget?.data?.title??"",style:TextStyle(color:Colors.grey,fontWeight:FontWeight.w900,
+        fontSize:SizeConfig.h6),));
+  }
+
+  getShareButton()
+  {
+    return  InkWell(
+        onTap:() async
+        {
+          var contacts = await  Navigator.push(context, new MaterialPageRoute(builder:(context)=> ChooseContactsPage()));
+          if(contacts!=null && contacts.isNotEmpty)
+          {
+            await RepositoryImpl().shareNotes(contacts, widget.data);
+          }
+        },
+        child:Icon(Icons.share));
+  }
+
+  getContentView()
+  {
+    return   Container(child:Text(widget?.data?.content??"",style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
+        fontSize:SizeConfig.t1),));
+  }
+
+  getInfoView()
+  {
+    return Row(children: [
+      Icon(Icons.account_circle_rounded),
+      SizedBox(width:SizeConfig.fitwidth(2),),
+      Expanded(child:Text(getNameByContactNumber(widget?.data?.creatorPhone)??"",style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
+          fontSize:SizeConfig.t1),)),
+
+      SizedBox(width:SizeConfig.fitwidth(5),),
+      Container(child:Text(CommonConstant.timeAgoSinceDate(widget?.data?.modifiedTime)??"",style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
+          fontSize:SizeConfig.s1),))
+    ],);
+  }
+
+  navigate()
+  {
+    Navigator.push(context, new MaterialPageRoute(builder:(context)=> NotesDetailPage(notesModel:widget.data,)));
+  }
+
 }

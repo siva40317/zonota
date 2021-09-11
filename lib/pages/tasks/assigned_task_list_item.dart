@@ -5,7 +5,7 @@ import 'package:zonota/common/colors.dart';
 import 'package:zonota/common/common_constant.dart';
 import 'package:zonota/common/global.dart';
 import 'package:zonota/config/size_config.dart';
-import 'package:zonota/models/TaskModel.dart';
+import 'package:zonota/models/task_model.dart';
 import 'package:zonota/models/notes_model.dart';
 import 'package:zonota/pages/choose_contacts_page.dart';
 import 'package:zonota/pages/tasks/task_detail_page.dart';
@@ -41,70 +41,93 @@ class _AssignedTasksListItemState extends State<AssignedTasksListItem> {
         crossAxisAlignment:CrossAxisAlignment.start,
         children: [
           SizedBox(height:SizeConfig.height(1),),
-          Container(child:Row(
-            children: [
-             Expanded(child: Text(widget.data.title,style:TextStyle(color:Colors.grey,fontWeight:FontWeight.w900,
-                  fontSize:SizeConfig.h6),)),
-            ],
-          )),
+          getTitleView(),
           SizedBox(height:SizeConfig.height(2),),
-
-          Container(child:Text(widget.data.content,maxLines:5,style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
-              fontSize:SizeConfig.t1),)),
-
+          getContentView(),
           Divider(),
           SizedBox(height:SizeConfig.height(1),),
-
-          Container(child:Text("Assigned By ",style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
-              fontSize:SizeConfig.s1),)),
+          getAssignedView(),
           SizedBox(height:SizeConfig.width(1),),
-          Row(children: [
-
-            Icon(Icons.account_circle_rounded),
-            SizedBox(width:SizeConfig.fitwidth(2),),
-            Expanded(child:Text(FirebaseAuth.instance.currentUser.uid == widget.data.creatorId?
-            "ME":getNameByContactNumber(widget.data.creatorPhone),style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
-                fontSize:SizeConfig.t1),)),
-
-            SizedBox(width:SizeConfig.fitwidth(5),),
-            Container(child:Text(CommonConstant.timeAgoSinceDate(widget?.data?.modifiedTime)??"",style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
-                fontSize:SizeConfig.s1),))
-          ],),
-
+          getInfoView(),
           SizedBox(height:SizeConfig.width(3),),
-          Container(
-            width:SizeConfig.width(100),
-            height:SizeConfig.height(3),
-            decoration:BoxDecoration(
-                color:AppColors.colorFromHex(AppColors.grey100),
-                borderRadius:BorderRadius.circular(SizeConfig.width(20))
-            ),
-            child:ClipRRect(
-                borderRadius:BorderRadius.circular(SizeConfig.width(20)),
-                child:Stack(
-                  alignment:Alignment.centerLeft,
-                  children: [
-                    Container(
-                      width:SizeConfig.width(widget.data.progress>14?(widget.data.progress)-14.00:widget.data.progress.toDouble()),
-                      decoration:BoxDecoration(
-                          color:getStatusColor(),
-                          borderRadius:BorderRadius.circular(SizeConfig.width(20))
-                      ),),
-                    Container(
-                        alignment:Alignment.center,
-                        width:SizeConfig.width(100),
-                        child:Text(getStatus(),style:TextStyle(color:getTextColor()),))
-                  ],
-                )),
-
-          )
-
-
+          getProgressView()
 
         ],
       ),
     ));
   }
+
+  getTitleView()
+  {
+    return Container(child:Row(
+      children: [
+        Expanded(child: Text(widget.data.title,style:TextStyle(color:Colors.grey,fontWeight:FontWeight.w900,
+            fontSize:SizeConfig.h6),)),
+      ],
+    ));
+  }
+
+  getAssignedView()
+  {
+    return
+      Container(child:Text("Assigned By ",style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
+          fontSize:SizeConfig.s1),));
+  }
+
+
+  getContentView()
+  {
+    return Container(child:Text(widget.data.content,maxLines:5,style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
+        fontSize:SizeConfig.t1),));
+  }
+
+  getInfoView()
+  {
+    return Row(children: [
+
+      Icon(Icons.account_circle_rounded),
+      SizedBox(width:SizeConfig.fitwidth(2),),
+      Expanded(child:Text(FirebaseAuth.instance.currentUser.uid == widget.data.creatorId?
+      "ME":getNameByContactNumber(widget.data.creatorPhone),style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
+          fontSize:SizeConfig.t1),)),
+
+      SizedBox(width:SizeConfig.fitwidth(5),),
+      Container(child:Text(CommonConstant.timeAgoSinceDate(widget?.data?.modifiedTime)??"",style:TextStyle(color:Colors.black,fontWeight:FontWeight.w300,
+          fontSize:SizeConfig.s1),))
+    ],);
+
+  }
+
+  getProgressView()
+  {
+    return  Container(
+      width:SizeConfig.width(100),
+      height:SizeConfig.height(3),
+      decoration:BoxDecoration(
+          color:AppColors.colorFromHex(AppColors.grey100),
+          borderRadius:BorderRadius.circular(SizeConfig.width(20))
+      ),
+      child:ClipRRect(
+          borderRadius:BorderRadius.circular(SizeConfig.width(20)),
+          child:Stack(
+            alignment:Alignment.centerLeft,
+            children: [
+              Container(
+                width:SizeConfig.width(widget.data.progress>14?(widget.data.progress)-14.00:widget.data.progress.toDouble()),
+                decoration:BoxDecoration(
+                    color:getStatusColor(),
+                    borderRadius:BorderRadius.circular(SizeConfig.width(20))
+                ),),
+              Container(
+                  alignment:Alignment.center,
+                  width:SizeConfig.width(100),
+                  child:Text(getStatus(),style:TextStyle(color:getTextColor()),))
+            ],
+          )),
+
+    );
+  }
+
 
   getStatus()
   {

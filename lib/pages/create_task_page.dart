@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zonota/common/colors.dart';
 import 'package:zonota/config/size_config.dart';
-import 'package:zonota/models/TaskModel.dart';
+import 'package:zonota/models/task_model.dart';
 import 'package:zonota/models/user_model.dart';
 import 'package:zonota/pages/choose_contacts_page.dart';
 import 'package:zonota/repositories/repository.dart';
@@ -141,7 +141,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             SizedBox(height:SizeConfig.height(1),),
             Container(
 
-              height:SizeConfig.fitheight(30),
+              height:SizeConfig.fitheight(40),
 
                 decoration: BoxDecoration(
                   color:AppColors.colorFromHex(AppColors.whiteSmoke),
@@ -154,6 +154,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                 ),
                 margin: EdgeInsets.only(left:SizeConfig.width(5),right:SizeConfig.width(5)),
                 child: TextField(
+                  maxLines:1000,
                   focusNode:descFocusNode,
                   autofocus:false,
                   onChanged:(value)

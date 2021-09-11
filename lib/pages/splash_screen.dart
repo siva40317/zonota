@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -15,11 +14,9 @@ import 'package:zonota/common/colors.dart';
 import 'package:zonota/common/global.dart';
 import 'package:zonota/common/image_asset.dart';
 import 'package:zonota/config/size_config.dart';
-import 'package:zonota/models/TaskModel.dart';
-import 'package:zonota/notifications/ReminderNotification.dart';
+import 'package:zonota/notifications/received_notification.dart';
 import 'package:zonota/pages/home_container.dart';
 import 'package:zonota/pages/login_page.dart';
-import 'package:zonota/repositories/repository.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
@@ -52,10 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
     init();
-    _askPermissions();
-
 
 
   }
@@ -70,6 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
     }
     else
       {
+        _askPermissions();
       Timer(Duration(seconds: 2), () {
 
           AppNavigator.replace(context, HomeContainer());
@@ -92,11 +87,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
       decoration: BoxDecoration(
         color: primary,
-       /* image: DecorationImage(
-          colorFilter: new ColorFilter.mode(
-              Colors.black.withOpacity(0.8), BlendMode.dstATop),
-          image: Image.asset(ImageA), fit: BoxFit.cover,
-        ),*/
       ),
       child: new Column(
         children: <Widget>[
@@ -160,94 +150,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void dispose() {
     super.dispose();
   }
-
-
-
-  void handleNotifications() async
-  {
-    final NotificationAppLaunchDetails notificationAppLaunchDetails =
-    await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-
-    const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('logo');
-
-    /// Note: permissions aren't requested here just to demonstrate that can be
-    /// done later
-    final IOSInitializationSettings initializationSettingsIOS =
-    IOSInitializationSettings(
-        requestAlertPermission: false,
-        requestBadgePermission: false,
-        requestSoundPermission: false,
-        onDidReceiveLocalNotification: (
-            int id,
-            String title,
-            String body,
-            String payload,
-            ) async {
-          didReceiveLocalNotificationSubject.add(
-            ReceivedNotification(
-              id: id,
-              title: title,
-              body: body,
-              payload: payload,
-            ),
-          );
-        });
-    const MacOSInitializationSettings initializationSettingsMacOS =
-    MacOSInitializationSettings(
-      requestAlertPermission: false,
-      requestBadgePermission: false,
-      requestSoundPermission: false,
-    );
-
-    final InitializationSettings initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsIOS,
-      macOS: initializationSettingsMacOS,
-    );
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (String payload) async {
-          if (payload != null) {
-            debugPrint('notification payload: $payload');
-          }
-          selectedNotificationPayload = payload;
-          selectNotificationSubject.add(payload);
-        });
-  }
-
-  void listenToNotifications()
-  {
-
-    if( FirebaseAuth.instance.currentUser!=null)
-    {
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-      Query reference = firestore.collection('users').doc(FirebaseAuth.instance.currentUser.uid).
-      collection('sharedNotes');
-      reference.snapshots().listen((querySnapshot) {
-        querySnapshot.docs.forEach((change) {
-          _showNotification();
-        });
-      });
-    }
-  }
-
-
-  Future<void> _showNotification() async {
-    handleNotifications();
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
-        'your channel id', 'your channel name', 'your channel description',
-        importance: Importance.max,
-        priority: Priority.high,
-        ticker: 'ticker');
-    const NotificationDetails platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-        0, 'plain title', 'plain body', platformChannelSpecifics,
-        payload: 'item x');
-  }
-
 
 
   _askPermissions() async {

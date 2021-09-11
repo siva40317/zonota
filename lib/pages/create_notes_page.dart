@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zonota/common/colors.dart';
 import 'package:zonota/config/size_config.dart';
-import 'package:zonota/models/TaskModel.dart';
+import 'package:zonota/models/task_model.dart';
 import 'package:zonota/models/notes_model.dart';
 import 'package:zonota/repositories/repository.dart';
 

@@ -6,16 +6,16 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:zonota/common/global.dart';
-import 'package:zonota/models/TaskModel.dart';
+import 'package:zonota/models/task_model.dart';
 import 'package:zonota/models/notes_model.dart';
 import 'package:zonota/models/user_model.dart';
 
 abstract class Repository {
-  void getMyTasks(StateSetter setState);
   Future<bool> addTask(TaskModel taskModel);
   Future<bool> addNotes(NotesModel notesModel);
   Future<List<UserModel>> getContacts();
   Future<bool> updateProgress(String id,int progress,int status);
+  Future<bool> shareNotes(List<UserModel> users,NotesModel notesModel);
 }
 
 class RepositoryImpl implements Repository {
@@ -55,23 +55,6 @@ class RepositoryImpl implements Repository {
     }
   }
 
-
-  @override
-  void getMyTasks(StateSetter setState) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-    Query reference = firestore.collection('tasks').orderBy('modifiedTime');
-    reference.snapshots().listen((querySnapshot) {
-      myTasks=[];
-      querySnapshot.docs.forEach((change) {
-        myTasks.insert(0,TaskModel.fromJson(change.data()));
-      });
-      setState.call(()
-      {
-
-      });
-    });
-  }
 
   @override
   Future<bool> addTask(TaskModel taskModel) async {
